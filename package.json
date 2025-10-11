@@ -6,7 +6,10 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/roblox-ts/create-roblox-ts.git"
+		"url": "https://github.com/white-dragon-bevy/create-roblox-ts.git"
+	},
+	"publishConfig": {
+		"access": "public"
 	},
 	"bin": {
 		"create-roblox-ts": "out/index.js"
