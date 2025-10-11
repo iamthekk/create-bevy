@@ -1,0 +1,19 @@
+{
+	"$schema": "https://json-schema.org/draft-07/schema#",
+	"repositories": [
+		{
+			"name": "claude-bevy",
+			"https": "https://github.com/white-dragon-bevy/claude-bevy.git",
+			"ssh": "git@github.com:white-dragon-bevy/claude-bevy.git",
+			"destination": ".claude",
+			"templates": ["game", "model", "plugin", "package"]
+		},
+		{
+			"name": "bevy_framework",
+			"https": "https://github.com/white-dragon-bevy/bevy_framework.git",
+			"ssh": "git@github.com:white-dragon-bevy/bevy_framework.git",
+			"destination": "repo/bevy_framework",
+			"templates": ["game", "model", "plugin", "package"]
+		}
+	]
+}

@@ -1,0 +1,13 @@
+node_modules/
+out/
+include/
+testez-companion-info.model.json
+sourcemap.json
+tmp/
+flamework.build
+.env
+.audit/
+*.rbxl
+.test-result/
+repo/
+.claude/

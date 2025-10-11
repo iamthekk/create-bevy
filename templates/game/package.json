@@ -1,0 +1,23 @@
+{
+  "name": "@white-dragon-bevy/game-template",
+  "version": "1.0.0",
+  "description": "A Roblox game project template",
+  "main": "out/init.lua",
+  "scripts": {
+    "build": "rbxtsc",
+    "watch": "rbxtsc -w"
+  },
+  "keywords": ["roblox", "roblox-ts", "game"],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/white-dragon-bevy/game-template.git"
+  },
+  "devDependencies": {
+    "@rbxts/compiler-types": "latest",
+    "@rbxts/types": "latest",
+    "roblox-ts": "latest",
+    "typescript": "^5.0.0"
+  }
+}

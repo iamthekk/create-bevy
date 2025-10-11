@@ -1,0 +1,64 @@
+{
+	"name": "@white-dragon-bevy/bevy_plugin_example",
+	"globIgnorePaths": [
+		"**/package.json",
+		"**/tsconfig.json",
+		"**/default.project.json",
+        "**/node_modules/**/node_modules/**",
+        "**/node_modules/**/__bootstrap__/**",
+        "**/node_modules/**/__examples__/**",
+        "**/node_modules/**/__tests__/**"
+	],
+	"tree": {
+		"$className": "DataModel",
+		"ReplicatedStorage": {
+			"$className": "ReplicatedStorage",
+			"rbxts_include": {
+				"$path": "include",
+				"node_modules": {
+					"$className": "Folder",
+					"@rbxts": {
+						"$path": "node_modules/@rbxts"
+					},
+					"@flamework": {
+						"$path": "node_modules/@flamework"
+					},
+					"@white-dragon-bevy": {
+						"$path": "node_modules/@white-dragon-bevy",
+						"bevy_plugin_example":{
+							"$className":"Folder",
+							"out": {
+								"$path": "out"
+							}
+						}
+					}
+				}
+			},
+			"TS": {
+				"$className": "Folder",
+				"__examples__":{
+					"$path": "out/__examples__"
+				}
+			}
+		},
+		"ServerScriptService": {
+			"$className": "ServerScriptService",
+			"TS": {
+				"$path": "out/__bootstrap__/server"
+			}
+		},
+		"StarterPlayer": {
+			"$className": "StarterPlayer",
+			"StarterPlayerScripts": {
+				"$className": "StarterPlayerScripts",
+				"TS": {
+					"$path": "out/__bootstrap__/client"
+				}
+			}
+		},
+		"TestService":{
+			"$className": "TestService",
+			"$path": "TestService"
+		}
+	}
+}

@@ -1,0 +1,79 @@
+{
+  "name": "@white-dragon-bevy/package_template",
+  "version": "1.0.0",
+  "description": "some description",
+  "main": "out/init.lua",
+  "scripts": {
+    "local-link": "node scripts/link-bevy-packages.js",
+    "install:proxy": "set HTTP_PROXY=http://192.168.199.208:5080 && set HTTPS_PROXY=http://192.168.199.208:5080 && pnpm install",
+    "build": "rbxtsc --type game ",
+    "watch": "rbxtsc -w --type game ",
+    "lint": "eslint --max-warnings 60 --fix .",
+    "prepublishOnly": "pnpm run build",
+    "test": "node TestService/test-in-roblox-cloud.js",
+    "test:cli": "testez-companion-node-cli",
+    "submodule:init" :"git submodule update --init --depth 1"
+  },
+  "repository": {
+    "type": "git",
+    "notice":"这是私有仓库",
+    "url": "git+https://github.com/white-dragon-bevy/package_template.git"
+  },
+  "keywords": [
+    "bevy",
+    "ecs",
+    "plugin",
+    "matter",
+    "roblox-ts",
+    "game-development"
+  ],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.15.0",
+  "types": "out/index.d.ts",
+  "files": [
+    "out",
+    "!**/*.tsbuildinfo",
+    "!global.d.ts",
+    "!out/**/*.spec",
+    "!out/**/__tests__",
+    "!out/**/__bootstrap__",
+    "!out/**/__examples__"
+  ],
+  "publishConfig": {
+    "access": "restricted",
+    "registry": "https://npm.pkg.github.com"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.36.0",
+    "@rbxts/compiler-types": "3.0.0-types.0",
+    "@rbxts/testez": "0.4.2-ts.0",
+    "@rbxts/types": "^1.0.884",
+    "@typescript-eslint/eslint-plugin": "^8.45.0",
+    "@typescript-eslint/parser": "^8.45.0",
+    "dotenv": "^16.4.7",
+    "eslint": "^9.36.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "eslint-plugin-roblox-ts": "^1.2.1",
+    "https-proxy-agent": "^7.0.6",
+    "prettier": "^3.6.2",
+    "rbxts-transformer-flamework": "^1.3.2",
+    "roblox-ts": "^3.0.0",
+    "typescript": "5.5.3"
+  },
+  "dependencies": {
+    "@flamework/core": "^1.3.2",
+    "@rbxts/compiler-types": "3.0.0-types.0",
+    "@rbxts/luau-polyfill": "^1.1.3",
+    "@rbxts/matter": "^0.8.5",
+    "@rbxts/plasma": "^0.4.5",
+    "@rbxts/rbx-better-signal": "^2.1.0",
+    "@rbxts/services": "^1.5.5",
+    "@rbxts/testez": "0.4.2-ts.0",
+    "@rbxts/types": "^1.0.882",
+    "@white-dragon-bevy/bevy_framework": "^0.0.6",
+    "testez-companion-node-cli": "^0.1.1",
+    "testez-componion-node-cli": "^1.0.0"
+  }
+}
