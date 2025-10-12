@@ -315,6 +315,17 @@ async function init(argv: yargs.Arguments<InitOptions>, initMode: InitMode) {
 						whitedragonBevyNode[packageNameWithoutScope] = whitedragonBevyNode[oldKey];
 						// Delete the old key
 						delete whitedragonBevyNode[oldKey];
+
+						// Also update globIgnorePaths to replace the old package name with the new one
+						if (projectJson.globIgnorePaths && Array.isArray(projectJson.globIgnorePaths)) {
+							projectJson.globIgnorePaths = projectJson.globIgnorePaths.map((pattern: string) => {
+								// Replace the old package name with the new one in the glob pattern
+								return pattern.replace(
+									new RegExp(`\\b${oldKey}\\b`, "g"),
+									packageNameWithoutScope,
+								);
+							});
+						}
 					}
 				}
 			}

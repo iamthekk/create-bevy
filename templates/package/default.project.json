@@ -7,7 +7,9 @@
         "**/node_modules/**/node_modules/**",
         "**/node_modules/**/__bootstrap__/**",
         "**/node_modules/**/__examples__/**",
-        "**/node_modules/**/__tests__/**"
+        "**/node_modules/**/__tests__/**",
+        "!**/node_modules/**/bevy_plugin_example/**"
+
 	],
 	"tree": {
 		"$className": "DataModel",

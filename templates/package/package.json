@@ -1,6 +1,6 @@
 {
   "name": "@white-dragon-bevy/package_template",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "some description",
   "main": "out/init.lua",
   "scripts": {
@@ -63,6 +63,7 @@
     "typescript": "5.5.3"
   },
   "dependencies": {
+    "@white-dragon-bevy/bevy_framework": "^0.0.7",
     "@flamework/core": "^1.3.2",
     "@rbxts/compiler-types": "3.0.0-types.0",
     "@rbxts/luau-polyfill": "^1.1.3",
@@ -72,7 +73,6 @@
     "@rbxts/services": "^1.5.5",
     "@rbxts/testez": "0.4.2-ts.0",
     "@rbxts/types": "^1.0.882",
-    "@white-dragon-bevy/bevy_framework": "^0.0.6",
     "testez-companion-node-cli": "^0.1.1",
     "testez-componion-node-cli": "^1.0.0"
   }
