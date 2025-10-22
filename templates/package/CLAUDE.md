@@ -48,7 +48,9 @@ npm test
 # 运行特定测试
 npm test < caseName or file name >
 
-# 使用 testez-companion (命令行)
-npm run test:cli
 ```
 
+
+## 项目进度
+
+| 实时更新项目进展情况

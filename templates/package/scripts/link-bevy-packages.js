@@ -52,6 +52,10 @@ try {
         console.log('node_modules/@white-dragon-bevy 目录不存在');
     }
 
+    // 创建包目录
+    fs.mkdirSync(whiteDragonNodeModulesPath, { recursive: true });
+    console.log(`  创建目录: ${whiteDragonNodeModulesPath}`);
+
     // 4. 验证所有包在 ../ 目录中存在
     console.log('\n验证包路径...');
     const packagePaths = [];
@@ -77,13 +81,9 @@ try {
 
         const nodeModulesPackagePath = path.join(__dirname, '..', 'node_modules', '@white-dragon-bevy', folderName);
         const targetOutPath = path.join(targetPath, 'out');
-        const targetPackageJsonPath = path.join(targetPath, 'package.json');
-        const linkOutPath = path.join(nodeModulesPackagePath, 'out');
-        const linkPackageJsonPath = path.join(nodeModulesPackagePath, 'package.json');
+        const linkOutPath = nodeModulesPackagePath
 
-        // 创建包目录
-        fs.mkdirSync(nodeModulesPackagePath, { recursive: true });
-        console.log(`  创建目录: ${nodeModulesPackagePath}`);
+
 
         // 检查 out 目录是否存在
         const absoluteTargetOutPath = path.resolve(targetOutPath);
@@ -95,14 +95,7 @@ try {
             console.log(`  创建链接: ${linkOutPath} -> ${absoluteTargetOutPath}`);
         }
 
-        // 复制 package.json
-        const absoluteTargetPackageJsonPath = path.resolve(targetPackageJsonPath);
-        if (fs.existsSync(absoluteTargetPackageJsonPath)) {
-            fs.copyFileSync(absoluteTargetPackageJsonPath, linkPackageJsonPath);
-            console.log(`  复制文件: ${linkPackageJsonPath}`);
-        } else {
-            console.warn(`  警告: package.json 文件不存在: ${absoluteTargetPackageJsonPath}`);
-        }
+      
     }
 
     console.log('\n操作完成!');

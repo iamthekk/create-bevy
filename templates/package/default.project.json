@@ -28,10 +28,7 @@
 					"@white-dragon-bevy": {
 						"$path": "node_modules/@white-dragon-bevy",
 						"bevy_plugin_example":{
-							"$className":"Folder",
-							"out": {
-								"$path": "out"
-							}
+							"$path": "out"
 						}
 					}
 				}
@@ -41,26 +38,28 @@
 				"__examples__":{
 					"$path": "out/__examples__"
 				}
+			},
+			"bootstrap": {
+				"$path": "bootstrap/shared"
 			}
 		},
 		"ServerScriptService": {
 			"$className": "ServerScriptService",
-			"TS": {
-				"$path": "out/__bootstrap__/server"
+			"bootstrap": {
+				"$path": "bootstrap/server"
 			}
 		},
 		"StarterPlayer": {
 			"$className": "StarterPlayer",
 			"StarterPlayerScripts": {
 				"$className": "StarterPlayerScripts",
-				"TS": {
-					"$path": "out/__bootstrap__/client"
+				"bootstrap": {
+					"$path": "bootstrap/client"
 				}
 			}
 		},
 		"TestService":{
-			"$className": "TestService",
-			"$path": "TestService"
+			"$path": "node_modules/test-cloud-testez/TestService/test-cloud-testez"
 		}
 	}
 }
