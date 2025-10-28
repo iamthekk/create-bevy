@@ -4,13 +4,13 @@
   "description": "some description",
   "main": "out/init.lua",
   "scripts": {
+    "prepublishOnly": "error: npm publish is forbidden, use npm run publish instead",
     "local-link": "node scripts/link-bevy-packages.js",
     "lint": "eslint --max-warnings 60 --fix .",
     "install:proxy": "set HTTP_PROXY=http://192.168.199.208:5080 && set HTTPS_PROXY=http://192.168.199.208:5080 && pnpm install",
     "build": "rbxtsc --type game ",
     "watch": "rbxtsc -w --type game ",
     "publish": "npm run build && node scripts/publish.js",
-    "prepublishOnly": "pnpm run build",
     "test": "npx test-cloud-testez",
     "submodule:init": "git submodule update --init --depth 1"
   },
@@ -35,6 +35,14 @@
     "access": "restricted",
     "registry": "https://npm.pkg.github.com"
   },
+  "files": [
+    "**/*.*",
+    "!**/__tests__",
+    "!**/__examples__",
+    "!**/__bootstrap__",
+    "!**/*.spec.*",
+    "!**/*.test.*"
+  ],
   "devDependencies": {
     "@eslint/js": "^9.36.0",
     "@rbxts/compiler-types": "3.0.0-types.0",
@@ -64,7 +72,7 @@
     "@rbxts/services": "^1.5.5",
     "@rbxts/testez": "0.4.2-ts.0",
     "@rbxts/types": "^1.0.882",
-    "@white-dragon-bevy/bevy_framework": "^0.0.7",
-    "eslint-plugin-react-roblox-hooks": "5.1.0-rbx.1"
+    "eslint-plugin-react-roblox-hooks": "5.1.0-rbx.1",
+    "@white-dragon-bevy/bevy_framework": "^0.7.0"
   }
 }
