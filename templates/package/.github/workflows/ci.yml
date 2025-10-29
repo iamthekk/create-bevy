@@ -1,0 +1,90 @@
+name: Roblox CI/CD
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+# 限制并发执行，因为 Roblox Open Cloud Luau Execution API 每个 universe 只支持 2 个并发请求
+concurrency:
+  group: roblox-testing-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  packages: read
+
+env:
+  NODE_VERSION: '20.x'
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 设置 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@white-dragon-bevy'
+
+      - name: 设置 pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.15.0
+
+      - name: 配置 GitHub Package Registry 认证
+        run: |
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> .npmrc
+
+      - name: 安装依赖
+        run: pnpm install --frozen-lockfile
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # - name: 运行 ESLint
+      #   run: pnpm run lint || true
+      #   continue-on-error: true
+
+      - name: 构建 TypeScript
+        run: pnpm run build
+
+      - name: 安装 Rokit
+        uses: CompeyDev/setup-rokit@v0.1.2
+
+      - name: 使用 Rojo 构建 Place 文件
+        run: |
+          rojo --version
+          rojo build default.project.json -o test-place.rbxl
+
+      - name: 上传构建产物
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-place
+          path: test-place.rbxl
+          retention-days: 7
+
+      - name: 上传到测试 Place 并运行测试
+        id: run-tests
+        run: npm test
+
+      - name: 上传测试报告
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports
+          path: .test-result/*.json
+          retention-days: 30
+          include-hidden-files: true
+
+      - name: 检查测试结果
+        if: failure()
+        run: |
+          echo "❌ 测试失败！请查看测试报告。"
+          exit 1
+

@@ -32,6 +32,7 @@ export default style(
 			"jsdoc/check-param-names": "off",
 			"jsdoc/convert-to-jsdoc-comments": "off",
 			"jsdoc/informative-docs": "off",
+			"unicorn/no-useless-undefined": "off",
 			"jsdoc/require-description-complete-sentence": "off",
 			"jsdoc/require-param": "off",
 			"jsdoc/require-returns-check": "off",
