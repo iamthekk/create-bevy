@@ -78,7 +78,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: test-reports
-          path: .test-result/*.json
+          path: .test-result/*.yaml
           retention-days: 30
           include-hidden-files: true
 
