@@ -231,6 +231,20 @@ async function init(argv: yargs.Arguments<InitOptions>, initMode: InitMode) {
 	// 1. 先复制所有模板文件
 	await benchmark("Copying template files..", async () => {
 		await fs.copy(templateDir, cwd);
+
+		// 重命名特殊文件（npm 默认会排除以点开头的配置文件）
+		const filesToRename = [
+			{ from: "gitignore", to: ".gitignore" },
+			{ from: "npmrc", to: ".npmrc" },
+		];
+
+		for (const { from, to } of filesToRename) {
+			const fromPath = path.join(cwd, from);
+			const toPath = path.join(cwd, to);
+			if (await fs.pathExists(fromPath)) {
+				await fs.rename(fromPath, toPath);
+			}
+		}
 	});
 
 	// 2. 修改 package.json 的名称和仓库信息

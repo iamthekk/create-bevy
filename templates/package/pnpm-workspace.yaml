@@ -1,0 +1,10 @@
+packages:
+  - .
+
+onlyBuiltDependencies:
+  - esbuild
+
+publicHoistPattern:
+  - '*@rbxts*'
+  - '*@flamework'
+  - '*@white-dragon-bevy'

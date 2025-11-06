@@ -1,7 +1,7 @@
 {
 	"name": "create-bevy",
 	"description": "Create a roblox-ts project from a template",
-	"version": "0.0.8",
+	"version": "0.0.9",
 	"author": "",
 	"license": "MIT",
 	"repository": {
@@ -45,6 +45,11 @@
 	},
 	"files": [
 		"out",
-		"templates"
+		"templates",
+		"!**/test-place.rbxl",
+		"!**/.test-result/",
+		"!**/include/",
+		"!**/flamework.build",
+		"!**/out/"
 	]
 }

@@ -8,42 +8,12 @@ importers:
 
   .:
     dependencies:
-      '@flamework/core':
-        specifier: ^1.3.2
-        version: 1.3.2
-      '@rbxts/compiler-types':
-        specifier: 3.0.0-types.0
-        version: 3.0.0-types.0
-      '@rbxts/luau-polyfill':
-        specifier: ^1.1.3
-        version: 1.1.3
-      '@rbxts/plasma':
-        specifier: ^0.4.5
-        version: 0.4.5
-      '@rbxts/rbx-better-signal':
-        specifier: ^2.1.0
-        version: 2.1.0
-      '@rbxts/services':
-        specifier: ^1.5.5
-        version: 1.6.0
       '@rbxts/testez':
         specifier: 0.4.2-ts.0
         version: 0.4.2-ts.0
-      '@rbxts/types':
-        specifier: ^1.0.884
-        version: 1.0.888
       '@white-dragon-bevy/bevy_framework':
-        specifier: ^0.8.0
-        version: 0.8.0(eslint@9.38.0)(typescript@5.5.3)
-      rbxts-transformer-flamework:
-        specifier: ^1.3.2
-        version: 1.3.2(typescript@5.5.3)
-      roblox-ts:
-        specifier: ^3.0.0
-        version: 3.0.0
-      test-cloud-testez:
-        specifier: ^0.3.0
-        version: 0.3.0
+        specifier: ^0.10.0
+        version: 0.10.0(typescript@5.5.3)
     devDependencies:
       '@eslint-react/eslint-plugin':
         specifier: ^2.2.3
@@ -78,6 +48,12 @@ importers:
       prettier:
         specifier: ^3.6.2
         version: 3.6.2
+      roblox-ts:
+        specifier: ^3.0.0
+        version: 3.0.0
+      test-cloud-testez:
+        specifier: ^0.3.0
+        version: 0.3.0
       typescript:
         specifier: 5.5.3
         version: 5.5.3
@@ -622,9 +598,6 @@ packages:
   '@rbxts/janitor@1.16.0-ts.0':
     resolution: {integrity: sha512-WAePVQuJg5NolwsY3dYLsyJa0Cf7dOyoGBUf6jtP2azgti7yUr0bmYNR7Z+nNEXWxsSKO49EdI+YOhnvp9b4mQ==}
 
-  '@rbxts/luau-polyfill@1.1.3':
-    resolution: {integrity: sha512-HhTeV1aeCDrr6PoTCc0khnAAxyBcDm0iXeu/t7l96u2Mr1fyA+0ugZd66A1xpThZwz/7YbTSFpiFp5SIFeu2Ug==}
-
   '@rbxts/maid@1.1.0':
     resolution: {integrity: sha512-bVWXZ0p2M3OJzPzvN5fY0T4s37ezUMY7EX31Xspp7Ds4C/K9yE4MHMRXjtlNvsYVPmoc5tdhAbpZY02Veix5lg==}
 
@@ -636,6 +609,9 @@ packages:
 
   '@rbxts/rbx-better-signal@2.1.0':
     resolution: {integrity: sha512-mMTFiGS2+8CMeYMiGDAgOg9a3OxlA+m+yaH42EqlxgAcUV0vjo4lH8KST9Go2w0w9cJFX/xqQ2LvxME8vzA8FA==}
+
+  '@rbxts/rewire@0.3.0':
+    resolution: {integrity: sha512-wChhGZ3kEkEsMK9ZuwKpwRsC7OGVZlvxrYMR3beFgCIPXE58JKLziBLkDACmd709XCCEmsMAqv9HMCMhSTD08Q==}
 
   '@rbxts/services@1.6.0':
     resolution: {integrity: sha512-YH02E1/tGHeMXB0Mam8qPdAZa2fjQWdylEscSL4Zn0RIaQeByYImA2qUsXM3nBdhcyKHDwltzSznDKyCGfFEWA==}
@@ -1097,8 +1073,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@white-dragon-bevy/bevy_framework@0.8.0':
-    resolution: {integrity: sha512-4GGr3PYknj1H7i8uhYxa/JAcGnahhLmORlAVFeaD7OO9Y8XBpw6tE0MKlYWkELqI+7flB1wJ6X4ZdDukrvYiuA==, tarball: https://npm.pkg.github.com/download/@white-dragon-bevy/bevy_framework/0.8.0/7855e8bdd58066c6293223ef235ec8ca6464ad5e}
+  '@white-dragon-bevy/bevy_framework@0.10.0':
+    resolution: {integrity: sha512-gOrO9ZmJNIOVUmn+tKVCRLo9zJJJCDg4aCtl1IlBG5CrdDGidUP12XpwNmNwlAOgLyca0Iw9SJDl+BD/OoVkMw==, tarball: https://npm.pkg.github.com/download/@white-dragon-bevy/bevy_framework/0.10.0/a55869d1655c9781f563a974ff1136835bc69972}
     engines: {node: '>=18.0.0', pnpm: '>=8.0.0'}
 
   acorn-jsx@5.3.2:
@@ -3875,8 +3851,6 @@ snapshots:
 
   '@rbxts/janitor@1.16.0-ts.0': {}
 
-  '@rbxts/luau-polyfill@1.1.3': {}
-
   '@rbxts/maid@1.1.0': {}
 
   '@rbxts/object-utils@1.0.4': {}
@@ -3886,6 +3860,8 @@ snapshots:
   '@rbxts/rbx-better-signal@2.1.0':
     dependencies:
       '@rbxts/janitor': 1.16.0-ts.0
+
+  '@rbxts/rewire@0.3.0': {}
 
   '@rbxts/services@1.6.0': {}
 
@@ -4407,20 +4383,17 @@ snapshots:
   '@unrs/resolver-binding-win32-x64-msvc@1.11.1':
     optional: true
 
-  '@white-dragon-bevy/bevy_framework@0.8.0(eslint@9.38.0)(typescript@5.5.3)':
+  '@white-dragon-bevy/bevy_framework@0.10.0(typescript@5.5.3)':
     dependencies:
-      '@eslint-react/eslint-plugin': 2.2.4(eslint@9.38.0)(typescript@5.5.3)
       '@flamework/core': 1.3.2
       '@rbxts/compiler-types': 3.0.0-types.0
-      '@rbxts/luau-polyfill': 1.1.3
       '@rbxts/plasma': 0.4.5
       '@rbxts/rbx-better-signal': 2.1.0
+      '@rbxts/rewire': 0.3.0
       '@rbxts/services': 1.6.0
       '@rbxts/types': 1.0.888
-      js-yaml: 4.1.0
+      rbxts-transformer-flamework: 1.3.2(typescript@5.5.3)
     transitivePeerDependencies:
-      - eslint
-      - supports-color
       - typescript
 
   acorn-jsx@5.3.2(acorn@8.15.0):

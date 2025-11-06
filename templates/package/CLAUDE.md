@@ -42,7 +42,7 @@ pnpm install
 # 代码检查
 pnpm lint
 
-# 运行测试 (通过 Roblox Cloud API)
+# 运行测试 (test-cloud-testez)
 npm test
 
 # 运行特定测试
