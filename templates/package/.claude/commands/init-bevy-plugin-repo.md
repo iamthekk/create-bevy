@@ -19,8 +19,6 @@
     - 更新 `CLAUDE.md`
 
 ## 修改模板信息
-- .claude-plugin\marketplace.json
-- .claude-plugin\plugin.json
 - package.json
 
 ## 提示下一步

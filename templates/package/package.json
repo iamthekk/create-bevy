@@ -1,10 +1,11 @@
 {
   "name": "@white-dragon-bevy/package_template",
   "version": "0.10.0",
-  "description": "some description",
+  "description": "...",
   "main": "out/init.lua",
   "scripts": {
     "prepublishOnly": "error: npm publish is forbidden, use npm run publish instead",
+		"postinstall": "npm run link-skills",
     "local-link": "node scripts/link-bevy-packages.js",
     "lint": "eslint --max-warnings 60 --fix .",
     "install:proxy": "set HTTP_PROXY=http://192.168.199.208:5080 && set HTTPS_PROXY=http://192.168.199.208:5080 && pnpm install",
@@ -16,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "notice": "这是私有仓库",
+    "notice": "...",
     "url": "git+https://github.com/white-dragon-bevy/package_template.git"
   },
   "keywords": [
