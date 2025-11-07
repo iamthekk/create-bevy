@@ -5,7 +5,7 @@
   "main": "out/init.lua",
   "scripts": {
     "prepublishOnly": "error: npm publish is forbidden, use npm run publish instead",
-		"postinstall": "npm run link-skills",
+		"postinstall": "node scripts/link-skills @white-dragon-bevy",
     "local-link": "node scripts/link-bevy-packages.js",
     "lint": "eslint --max-warnings 60 --fix .",
     "install:proxy": "set HTTP_PROXY=http://192.168.199.208:5080 && set HTTPS_PROXY=http://192.168.199.208:5080 && pnpm install",
