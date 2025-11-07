@@ -359,33 +359,14 @@ async function init(argv: yargs.Arguments<InitOptions>, initMode: InitMode) {
 			return repo.templates.includes(template);
 		});
 
-		if (repositoriesToClone.length > 0) {
-			await benchmark("Cloning repositories..", async () => {
-				for (const repo of repositoriesToClone) {
-					const repoUrl = gitProtocol === GitProtocol.SSH ? repo.ssh : repo.https;
-					const destPath = path.join(cwd, repo.destination);
-
-					// Ensure parent directory exists
-					await fs.ensureDir(path.dirname(destPath));
-
-					try {
-						await cmd(`git clone ${repoUrl} "${destPath}" --depth 1`, cwd);
-					} catch (error) {
-						if (error instanceof Error) {
-							throw new InitError(
-								`Failed to clone repository ${repo.name}:\n${error.message}\nPlease check your Git configuration and network connection.`,
-							);
-						}
-						throw error;
-					}
-				}
-			});
-		}
+		
 	}
 
 	if (!argv.skipBuild) {
 		await benchmark("Compiling..", () => cmd(selectedPackageManager.build, cwd));
 	}
+
+	console.log("成功创建 bevy 插件, 请进入插件目录, 运行 Claude Code, 使用 /init-bevy-plugin-repo 命令初始化插件仓库")
 }
 
 const GAME_DESCRIPTION = "Generate a Roblox place";
