@@ -6,3 +6,4 @@ flamework.build
 .env
 *.rbxl
 .test-result/
+**/.claude/**/@*

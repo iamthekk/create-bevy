@@ -6,9 +6,9 @@
  * 2. 查找其中所有子包的 .claude-plugin/ 下的指定目录（agents, skills, commands）
  * 3. 将每个资源子目录链接到 .claude/ 对应目录下
  * 4. 链接名称格式：
- *    - skills: {包名}__{资源名} (避免命名冲突)
- *    - agents: {包名}/{资源名} (分组管理)
- *    - commands: {包名}/{资源名} (分组管理)
+ *    - skills: @{scope}__{包名}__{资源名} (避免命名冲突，扫描子目录)
+ *    - agents: @{scope}__{包名} (直接链接整个目录)
+ *    - commands: @{scope}__{包名} (直接链接整个目录)
  *
  * 使用方法:
  * node scripts/link-skills.js @white-dragon-bevy @another-scope
@@ -17,6 +17,7 @@
  * 注意:
  * - Windows 系统使用 junction 类型链接，不需要管理员权限
  * - --dry-run 参数仅预览，不实际创建链接
+ * - 运行时会先清除 .claude/ 目录下所有以 @ 开头的文件夹
  * - 已存在的同名链接会被覆盖
  */
 
@@ -62,29 +63,31 @@ function showHelp() {
   node scripts/link-skills.js --dry-run @white-dragon-bevy
 
 工作原理:
-  1. 扫描 node_modules/{目录名}/ 下的所有子包
-  2. 在每个子包中查找以下目录:
+  1. 清理 .claude/ 目录下所有以 @ 开头的文件夹
+  2. 扫描 node_modules/{目录名}/ 下的所有子包
+  3. 在每个子包中查找以下目录:
      - .claude-plugin/agents/
      - .claude-plugin/skills/
      - .claude-plugin/commands/
-  3. 将每个目录内的子目录链接到 .claude/ 对应目录下
-  4. 链接命名格式:
-     - skills: {包名}__{资源名}
-     - agents: {包名}/{资源名}
-     - commands: {包名}/{资源名}
+  4. 将资源链接到 .claude/ 对应目录下
+  5. 链接命名格式:
+     - skills: @{scope}__{包名}__{资源名} (扫描子目录并逐个链接)
+     - agents: @{scope}__{包名} (直接链接整个目录)
+     - commands: @{scope}__{包名} (直接链接整个目录)
 
 示例路径映射:
   node_modules/@white-dragon-bevy/some-plugin/.claude-plugin/skills/abc
-    -> .claude/skills/some-plugin__abc
+    -> .claude/skills/@white-dragon-bevy__some-plugin__abc
 
-  node_modules/@white-dragon-bevy/some-plugin/.claude-plugin/agents/debug-agent
-    -> .claude/agents/some-plugin/debug-agent
+  node_modules/@white-dragon-bevy/some-plugin/.claude-plugin/agents/
+    -> .claude/agents/@white-dragon-bevy__some-plugin
 
-  node_modules/@white-dragon-bevy/some-plugin/.claude-plugin/commands/build
-    -> .claude/commands/some-plugin/build
+  node_modules/@white-dragon-bevy/some-plugin/.claude-plugin/commands/
+    -> .claude/commands/@white-dragon-bevy__some-plugin
 
 注意事项:
   • Windows 系统使用 junction 类型链接，不需要管理员权限
+  • 运行时会先清除 .claude/ 目录下所有以 @ 开头的文件夹
   • 已存在的同名链接会被覆盖
   • 找不到的包会显示警告并继续处理其他包
 `);
@@ -126,6 +129,9 @@ function scanForPluginDirs(targetDir, nodeModulesPath, pluginDir) {
   const results = [];
   const entries = fs.readdirSync(targetPath, { withFileTypes: true });
 
+  // 对于 commands 和 agents，不需要深层扫描，直接链接整个目录
+  const needsDeepScan = pluginDir === 'skills';
+
   for (const entry of entries) {
     const packagePath = path.join(targetPath, entry.name);
 
@@ -153,32 +159,115 @@ function scanForPluginDirs(targetDir, nodeModulesPath, pluginDir) {
 
     if (!hasPluginDir) continue;
 
-    // 读取插件目录内的子目录
-    const pluginEntries = fs.readdirSync(pluginPath, { withFileTypes: true });
-    const items = [];
+    if (needsDeepScan) {
+      // 对于 skills，需要扫描子目录
+      const pluginEntries = fs.readdirSync(pluginPath, { withFileTypes: true });
+      const items = [];
 
-    for (const pluginEntry of pluginEntries) {
-      const itemPath = path.join(pluginPath, pluginEntry.name);
-      try {
-        if (fs.statSync(itemPath).isDirectory()) {
-          items.push(pluginEntry.name);
+      for (const pluginEntry of pluginEntries) {
+        const itemPath = path.join(pluginPath, pluginEntry.name);
+        try {
+          if (fs.statSync(itemPath).isDirectory()) {
+            items.push(pluginEntry.name);
+          }
+        } catch (error) {
+          // 跳过无法访问的条目
         }
-      } catch (error) {
-        // 跳过无法访问的条目
       }
-    }
 
-    if (items.length > 0) {
+      if (items.length > 0) {
+        results.push({
+          packageName,
+          packagePath,
+          pluginPath,
+          items
+        });
+      }
+    } else {
+      // 对于 commands 和 agents，直接返回整个目录
       results.push({
         packageName,
         packagePath,
         pluginPath,
-        items
+        items: null // null 表示直接链接整个目录
       });
     }
   }
 
   return results;
+}
+
+// 清理 .claude/ 目录下所有以 @ 开头的文件夹
+function cleanClaudeDirs(dryRun) {
+  const claudeBasePath = path.join(__dirname, '..', '.claude');
+  let totalCleaned = 0;
+
+  console.log('\n清理 .claude/ 目录下所有以 @ 开头的文件夹...');
+  console.log('-'.repeat(60));
+
+  for (const pluginDir of PLUGIN_DIRS) {
+    const claudeDirPath = path.join(claudeBasePath, pluginDir);
+
+    if (!fs.existsSync(claudeDirPath)) {
+      continue;
+    }
+
+    try {
+      const entries = fs.readdirSync(claudeDirPath, { withFileTypes: true });
+      const itemsToRemove = [];
+
+      for (const entry of entries) {
+        // 只处理以 @ 开头的文件夹（包括符号链接）
+        if (entry.name.startsWith('@')) {
+          const itemPath = path.join(claudeDirPath, entry.name);
+          try {
+            const stat = fs.lstatSync(itemPath);
+            // 检查是否为目录或符号链接（junction）
+            if (stat.isDirectory() || stat.isSymbolicLink()) {
+              itemsToRemove.push(entry.name);
+            }
+          } catch (error) {
+            // 跳过无法访问的条目
+            continue;
+          }
+        }
+      }
+
+      if (itemsToRemove.length > 0) {
+        console.log(`\n  ${pluginDir}/ 目录:`);
+        for (const itemName of itemsToRemove) {
+          const itemPath = path.join(claudeDirPath, itemName);
+          if (dryRun) {
+            console.log(`    [预览] 将删除: ${itemName}`);
+          } else {
+            try {
+              const stat = fs.lstatSync(itemPath);
+              if (stat.isSymbolicLink()) {
+                fs.unlinkSync(itemPath);
+              } else if (stat.isDirectory()) {
+                fs.rmSync(itemPath, { recursive: true, force: true });
+              } else {
+                fs.unlinkSync(itemPath);
+              }
+              console.log(`    ✓ 已删除: ${itemName}`);
+              totalCleaned++;
+            } catch (error) {
+              console.error(`    ✗ 删除失败: ${itemName} - ${error.message}`);
+            }
+          }
+        }
+      }
+    } catch (error) {
+      console.warn(`  警告: 无法读取 ${pluginDir} 目录: ${error.message}`);
+    }
+  }
+
+  if (dryRun) {
+    console.log('\n  [预览模式] 不会实际删除文件');
+  } else {
+    console.log(`\n清理完成: 已删除 ${totalCleaned} 个文件夹`);
+  }
+  console.log('-'.repeat(60));
 }
 
 // 创建符号链接
@@ -230,6 +319,9 @@ async function main() {
     console.log('\n[预览模式] 不会创建实际链接\n');
   }
 
+  // 先清理 .claude/ 目录下所有以 @ 开头的文件夹
+  cleanClaudeDirs(dryRun);
+
   const nodeModulesPath = path.join(__dirname, '..', 'node_modules');
 
   let totalItems = 0;
@@ -249,11 +341,12 @@ async function main() {
       }
 
       foundAny = true;
-      //console.log(`\n  发现 ${pluginDir} 资源:`);
+      console.log(`\n  发现 ${pluginDir} 资源:`);
+
+      // 提取 scope（如果 target 以 @ 开头，则使用它；否则使用 target 作为 scope）
+      const scope = target.startsWith('@') ? target : `@${target}`;
 
       for (const { packageName, items, pluginPath } of packagesWithItems) {
-        //console.log(`\n  包: ${packageName}`);
-
         const claudeDirPath = path.join(__dirname, '..', '.claude', pluginDir);
 
         // 确保 .claude/{pluginDir} 目录存在
@@ -261,31 +354,26 @@ async function main() {
           fs.mkdirSync(claudeDirPath, { recursive: true });
         }
 
-        // 对于 agents 和 commands，需要先创建包名子目录
-        if (pluginDir === 'agents' || pluginDir === 'commands') {
-          const packageDirPath = path.join(claudeDirPath, packageName);
-          if (!dryRun && !fs.existsSync(packageDirPath)) {
-            fs.mkdirSync(packageDirPath, { recursive: true });
-          }
-        }
-
-        for (const itemName of items) {
+        if (items === null) {
+          // 对于 commands 和 agents，直接链接整个目录
           totalItems++;
-          const sourceItemPath = path.join(pluginPath, itemName);
-
-          // 根据插件类型决定链接命名规则
-          let targetLinkPath;
-          if (pluginDir === 'skills') {
-            // skills: 使用 packageName__itemName 格式
-            const linkName = `${packageName}__${itemName}`;
-            targetLinkPath = path.join(claudeDirPath, linkName);
-          } else {
-            // agents 和 commands: 使用 packageName/itemName 格式
-            targetLinkPath = path.join(claudeDirPath, packageName, itemName);
-          }
-
-          const success = createSymlink(sourceItemPath, targetLinkPath, dryRun);
+          // 使用 @{scope}__{packageName} 格式
+          const linkName = `${scope}__${packageName}`;
+          const targetLinkPath = path.join(claudeDirPath, linkName);
+          const success = createSymlink(pluginPath, targetLinkPath, dryRun);
           if (success) successCount++;
+        } else {
+          // 对于 skills，遍历子目录并链接
+          for (const itemName of items) {
+            totalItems++;
+            const sourceItemPath = path.join(pluginPath, itemName);
+            // skills: 使用 @{scope}__{packageName}__{itemName} 格式
+            const linkName = `${scope}__${packageName}__${itemName}`;
+            const targetLinkPath = path.join(claudeDirPath, linkName);
+
+            const success = createSymlink(sourceItemPath, targetLinkPath, dryRun);
+            if (success) successCount++;
+          }
         }
       }
     }
