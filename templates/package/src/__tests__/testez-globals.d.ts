@@ -1,1 +1,1 @@
-/// <reference types="@rbxts/testez/globals" />
+/// <reference types="@rbxts/test-cloud-testez/globals" />
