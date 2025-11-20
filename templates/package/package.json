@@ -1,11 +1,11 @@
 {
   "name": "@white-dragon-bevy/package_template",
-  "version": "0.13.0",
+  "version": "0.13.14",
   "description": "...",
   "main": "out/init.lua",
   "scripts": {
     "prepublishOnly": "error: npm publish is forbidden, use npm run publish instead",
-		"postinstall": "node scripts/link-claude-code-staffs.mjs @white-dragon-bevy",
+		"postinstall": "node scripts/link-claude-code-staffs.mjs @white-dragon-bevy @rbxts",
     "local-link": "node scripts/link-bevy-packages.js",
     "lint": "eslint --max-warnings 60 --fix .",
     "install:proxy": "set HTTP_PROXY=http://192.168.199.208:5080 && set HTTPS_PROXY=http://192.168.199.208:5080 && pnpm install",
@@ -45,6 +45,7 @@
     "!**/*.test.*"
   ],
   "devDependencies": {
+    "@rbxts/test-cloud-testez": "^0.5.4",
     "@eslint-react/eslint-plugin": "^2.2.3",
     "@eslint/js": "^9.36.0",
     "@isentinel/eslint-config": "^3.4.1",
@@ -57,10 +58,9 @@
     "eslint-plugin-roblox-ts": "^1.2.1",
     "prettier": "^3.6.2",
     "roblox-ts": "^3.0.0",
-    "@rbxts/testez": "0.4.2-ts.0",
     "typescript": "5.5.3"
   },
   "peerDependencies": {
-    "@white-dragon-bevy/bevy_framework": "^0.13.2"
+    "@white-dragon-bevy/bevy_framework": "^0.13.14"
   }
 }
