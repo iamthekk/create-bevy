@@ -26,7 +26,7 @@ import { RunService } from "@rbxts/services";
 import type { BevyWorld, Context } from "@white-dragon-bevy/bevy_framework";
 import { App, DefaultPlugins, Main } from "@white-dragon-bevy/bevy_framework";
 
-function fooSystem(world: BevyWorld, context: Context) {}
+function fooSystem(world: BevyWorld) {}
 
 /**
  * 创建并配置带有默认插件的应用
