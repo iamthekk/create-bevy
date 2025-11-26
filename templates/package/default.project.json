@@ -59,7 +59,7 @@
 			}
 		},
 		"TestService":{
-			"$path": "node_modules/test-cloud-testez/TestService/test-cloud-testez"
+			"$path": "node_modules/@rbxts/test-cloud-testez/TestService"
 		}
 	}
 }

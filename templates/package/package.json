@@ -1,6 +1,6 @@
 {
   "name": "@white-dragon-bevy/package_template",
-  "version": "0.13.14",
+  "version": "0.0.1",
   "description": "...",
   "main": "out/init.lua",
   "scripts": {
@@ -61,6 +61,6 @@
     "typescript": "5.5.3"
   },
   "peerDependencies": {
-    "@white-dragon-bevy/bevy_framework": "^0.13.14"
+    "@white-dragon-bevy/bevy_framework": "^0.14.0-beta.5"
   }
 }
