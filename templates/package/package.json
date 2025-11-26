@@ -45,7 +45,7 @@
     "!**/*.test.*"
   ],
   "devDependencies": {
-    "@rbxts/test-cloud-testez": "^0.5.4",
+    "@rbxts/test-cloud-testez": "^0.5.10",
     "@eslint-react/eslint-plugin": "^2.2.3",
     "@eslint/js": "^9.36.0",
     "@isentinel/eslint-config": "^3.4.1",
